@@ -554,11 +554,14 @@ class GitMptForCausalLM(MptForCausalLM):
             for layer_past in past
             for past_state in layer_past
         }
-        reordered_past = tuple(
+        return tuple(
             (
-                layer_past[0].index_select(0, device_to_beam_idx[layer_past[0].device]),
-                layer_past[1].index_select(0, device_to_beam_idx[layer_past[0].device]),
+                layer_past[0].index_select(
+                    0, device_to_beam_idx[layer_past[0].device]
+                ),
+                layer_past[1].index_select(
+                    0, device_to_beam_idx[layer_past[0].device]
+                ),
             )
             for layer_past in past
         )
-        return reordered_past

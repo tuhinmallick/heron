@@ -166,7 +166,7 @@ def set_trainable_params(
     untrainable_list = []
 
     # There is no conflict between keys_to_finetune and keys_to_freeze because one of them is empty.
-    if len(keys_to_freeze) > 0 and len(keys_to_finetune) == 0:
+    if keys_to_freeze and not keys_to_finetune:
         for name, p in model.named_parameters():
             if train_lora and "lora" in name:
                 p.requires_grad = True
@@ -178,7 +178,7 @@ def set_trainable_params(
                 p.requires_grad = True
                 trainable_list.append(name)
 
-    elif len(keys_to_finetune) > 0 and len(keys_to_freeze) == 0:
+    elif len(keys_to_finetune) > 0 and not keys_to_freeze:
         for name, p in model.named_parameters():
             if train_lora and "lora" in name:
                 p.requires_grad = True
