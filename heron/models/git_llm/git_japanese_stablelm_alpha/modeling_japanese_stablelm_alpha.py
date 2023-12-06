@@ -283,12 +283,11 @@ class DecoderLayer(nn.Module):
         mlp_output = self.mlp(self.post_attention_layernorm(hidden_states))
         hidden_states = hidden_states + mlp_output + attn_output
 
-        if use_cache:
-            outputs = (hidden_states,) + outputs  # hidden_states, present, (attn_weights)
-        else:
-            outputs = (hidden_states,) + outputs[1:]  # hidden_states, (attn_weights)
-
-        return outputs
+        return (
+            (hidden_states,) + outputs
+            if use_cache
+            else (hidden_states,) + outputs[1:]
+        )
 
 
 class MLP(nn.Module):

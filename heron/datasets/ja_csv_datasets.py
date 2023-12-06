@@ -66,18 +66,16 @@ class JapaneseCSVDataset(BaseDataset):
                 df_val = pd.read_csv(os.path.join(dataset_root, "data/coco/df_val.csv"))
                 target_dataset_list.append(df_val)
 
-        if "visual_genome" in dataset_config["dataset_names"]:
-            df_vg = pd.read_csv(os.path.join(dataset_root, "data/visual_genome_ja/df_vg.csv"))
-            if split != "train":
-                val_ratio = 0.1
-                num_val = int(len(df_vg) * val_ratio)
-                df_vg = df_vg[:num_val]
-            target_dataset_list.append(df_vg)
-        else:
+        if "visual_genome" not in dataset_config["dataset_names"]:
             raise ValueError(
                 f"dataset_type: {dataset_config.get('dataset_type')} is not supported."
             )
 
+        df_vg = pd.read_csv(os.path.join(dataset_root, "data/visual_genome_ja/df_vg.csv"))
+        if split != "train":
+            num_val = int(len(df_vg) * 0.1)
+            df_vg = df_vg[:num_val]
+        target_dataset_list.append(df_vg)
         target_dataframe = pd.concat(target_dataset_list, axis=0, ignore_index=True)
 
         return cls(
@@ -120,7 +118,7 @@ class JapaneseCSVDataset(BaseDataset):
             text += f"##human: {question}\n##gpt: {answer}\n"
 
         # remove final space
-        text = text[: len(text) - 1]
+        text = text[:-1]
 
         # imageのロード
         image = Image.open(os.path.join(self.dataset_root, img_path)).convert("RGB")

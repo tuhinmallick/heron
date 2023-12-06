@@ -24,13 +24,11 @@ from transformers import (
 
 def get_tokenizer(language_model_name: str) -> "Tokenizer":
     if "stablelm" in language_model_name:
-        tokenizer = LlamaTokenizer.from_pretrained(
+        return LlamaTokenizer.from_pretrained(
             "novelai/nerdstash-tokenizer-v1",
             padding_side="right",
             additional_special_tokens=["▁▁"],
         )
-        return tokenizer
-
     elif "weblab" in language_model_name:
         tokenizer = AutoTokenizer.from_pretrained(
             language_model_name, padding_side="right", use_fast=True
@@ -46,15 +44,11 @@ def get_tokenizer(language_model_name: str) -> "Tokenizer":
         return tokenizer
 
     elif "ELYZA" in language_model_name:
-        tokenizer = AutoTokenizer.from_pretrained(language_model_name, padding_side="right")
-        return tokenizer
-
+        return AutoTokenizer.from_pretrained(language_model_name, padding_side="right")
     elif "open-calm" in language_model_name:
-        tokenizer = AutoTokenizer.from_pretrained(
+        return AutoTokenizer.from_pretrained(
             language_model_name, padding_side="right", use_fast=True
         )
-        return tokenizer
-
     elif "mpt" in language_model_name:
         tokenizer = AutoTokenizer.from_pretrained(
             language_model_name, padding_side="right", use_fast=True
@@ -70,11 +64,9 @@ def get_tokenizer(language_model_name: str) -> "Tokenizer":
         return tokenizer
 
     elif "opt" in language_model_name:
-        tokenizer = AutoTokenizer.from_pretrained(
+        return AutoTokenizer.from_pretrained(
             language_model_name, padding_side="right", use_fast=False
         )
-        return tokenizer
-
     else:
         raise NotImplementedError(
             f"Tokenizer for language_model_name: {language_model_name} is not implemented."

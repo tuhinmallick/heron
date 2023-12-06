@@ -89,7 +89,7 @@ class VideoBlipProcessor(ProcessorMixin):
         # Get only text
         if images is None:
             self.current_processor = self.tokenizer
-            text_encoding = self.tokenizer(
+            return self.tokenizer(
                 text=text,
                 add_special_tokens=add_special_tokens,
                 padding=padding,
@@ -107,8 +107,6 @@ class VideoBlipProcessor(ProcessorMixin):
                 return_tensors=return_tensors,
                 **kwargs,
             )
-            return text_encoding
-
         # add pixel_values
         encoding_image_processor = self.image_processor(images, return_tensors=return_tensors)
 

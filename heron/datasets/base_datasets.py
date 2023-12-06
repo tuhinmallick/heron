@@ -53,11 +53,10 @@ class ResilientDataset(BaseDataset):
         
         if self.is_inference:
             return self._get_item_inference(index)
-        else:
-            for _ in range(self.max_trials):
-                try:
-                    return self._get_item_train(index)
-                except Exception as e:
-                    print("Exception in ResilientDataset", e)
-                    traceback.print_exc()
-                    index += 1
+        for _ in range(self.max_trials):
+            try:
+                return self._get_item_train(index)
+            except Exception as e:
+                print("Exception in ResilientDataset", e)
+                traceback.print_exc()
+                index += 1

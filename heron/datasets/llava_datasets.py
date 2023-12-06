@@ -37,7 +37,7 @@ class LlavaDataset(BaseDataset):
         dataset_root: str,
     ):
         super(LlavaDataset, self).__init__(is_inference)
-        assert language in ["ja", "en"], "given language is not supported"
+        assert language in {"ja", "en"}, "given language is not supported"
         self.loaded_dataset = loaded_dataset
         self.max_length = max_length
         self.processor = processor
@@ -127,13 +127,12 @@ class LlavaDataset(BaseDataset):
         tokenized_prompt = tokenized["input_ids"][0]
         prompt_attn_mask = tokenized["attention_mask"][0]
 
-        return_dict = {
+        return {
             "input_ids": tokenized_prompt,
             "labels": tokenized_prompt,
             "attention_mask": prompt_attn_mask,
             "pixel_values": self.preprocess_image(images),
         }
-        return return_dict
 
     def _get_item_inference(self, index):
         row = self.loaded_dataset[index]
@@ -150,7 +149,7 @@ class LlavaDataset(BaseDataset):
         tokenized_prompt = tokenized["input_ids"][0]
         prompt_attn_mask = tokenized["attention_mask"][0]
 
-        return_dict = {
+        return {
             "input_ids": tokenized_prompt,
             "labels": tokenized_prompt,
             "attention_mask": prompt_attn_mask,
@@ -159,4 +158,3 @@ class LlavaDataset(BaseDataset):
             "conversations": row["conversations"],
             "prompt": prompt,
         }
-        return return_dict
